@@ -104,10 +104,17 @@ export function useVoiceAssistant(): UseVoiceAssistantReturn {
     // Stop any ongoing speech
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Limit text to approximately 10 seconds of speech (roughly 80-100 words)
+    const words = text.split(' ');
+    const maxWords = 80; // Approximately 10 seconds at normal speech rate
+    const limitedText = words.length > maxWords 
+      ? words.slice(0, maxWords).join(' ') + '...' 
+      : text;
+
+    const utterance = new SpeechSynthesisUtterance(limitedText);
     
-    // Configure speech settings
-    utterance.rate = 0.8;
+    // Configure speech settings for faster delivery within 10 seconds
+    utterance.rate = 1.0; // Slightly faster to fit within time limit
     utterance.pitch = 1.0;
     utterance.volume = 0.8;
     
@@ -123,16 +130,29 @@ export function useVoiceAssistant(): UseVoiceAssistantReturn {
       utterance.voice = preferredVoice;
     }
 
+    // Set up timeout to enforce 10-second limit
+    let timeoutId: NodeJS.Timeout;
+
     utterance.onstart = () => {
       setIsSpeaking(true);
+      // Force stop after 10 seconds
+      timeoutId = setTimeout(() => {
+        if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+          setIsSpeaking(false);
+          speechSynthesisRef.current = null;
+        }
+      }, 10000);
     };
 
     utterance.onend = () => {
+      clearTimeout(timeoutId);
       setIsSpeaking(false);
       speechSynthesisRef.current = null;
     };
 
     utterance.onerror = (event) => {
+      clearTimeout(timeoutId);
       console.error("Speech synthesis error:", event.error);
       setIsSpeaking(false);
       speechSynthesisRef.current = null;

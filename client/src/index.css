@@ -5,31 +5,31 @@
 @tailwind utilities;
 
 :root {
-  /* Base color palette for medical application */
-  --background: hsl(210, 20%, 98%);
-  --foreground: hsl(210, 25%, 7.8431%);
-  --card: hsl(180, 6.6667%, 97.0588%);
-  --card-foreground: hsl(210, 25%, 7.8431%);
-  --popover: hsl(0, 0%, 100%);
-  --popover-foreground: hsl(210, 25%, 7.8431%);
+  /* Medical-themed color scheme inspired by the provided interface */
+  --background: hsl(220, 30%, 7%);  /* Deep navy blue background */
+  --foreground: hsl(180, 100%, 95%); /* Light cyan text */
+  --card: hsl(220, 25%, 12%); /* Darker card background */
+  --card-foreground: hsl(180, 100%, 95%);
+  --popover: hsl(220, 25%, 12%);
+  --popover-foreground: hsl(180, 100%, 95%);
   
-  /* Medical themed primary colors */
-  --primary: hsl(217, 91%, 60%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --medical-blue: hsl(217, 91%, 60%);
-  --medical-blue-dark: hsl(217, 91%, 50%);
-  --health-green: hsl(159, 78%, 36%);
-  --health-green-dark: hsl(159, 78%, 26%);
-  --medical-purple: hsl(263, 70%, 58%);
-  --medical-amber: hsl(45, 93%, 47%);
+  /* Medical themed primary colors - bright cyan theme */
+  --primary: hsl(180, 100%, 50%); /* Bright cyan/medical blue */
+  --primary-foreground: hsl(220, 30%, 7%);
+  --medical-blue: hsl(180, 100%, 50%);
+  --medical-blue-dark: hsl(180, 100%, 40%);
+  --health-green: hsl(159, 78%, 50%);
+  --health-green-dark: hsl(159, 78%, 40%);
+  --medical-purple: hsl(263, 70%, 65%);
+  --medical-amber: hsl(45, 100%, 60%);
   
   /* Secondary and utility colors */
-  --secondary: hsl(210, 40%, 95%);
-  --secondary-foreground: hsl(210, 25%, 7.8431%);
-  --muted: hsl(210, 40%, 96%);
-  --muted-foreground: hsl(215, 16%, 47%);
-  --accent: hsl(211.5789, 51.3514%, 92.7451%);
-  --accent-foreground: hsl(217, 91%, 60%);
+  --secondary: hsl(200, 100%, 25%); /* Darker medical blue */
+  --secondary-foreground: hsl(180, 100%, 95%);
+  --muted: hsl(220, 20%, 20%);
+  --muted-foreground: hsl(180, 50%, 70%);
+  --accent: hsl(180, 100%, 40%); /* Accent cyan */
+  --accent-foreground: hsl(220, 30%, 7%);
   
   /* Status and feedback colors */
   --destructive: hsl(0, 84%, 60%);
@@ -42,9 +42,9 @@
   --info-foreground: hsl(0, 0%, 100%);
   
   /* Border and input colors */
-  --border: hsl(214, 32%, 91%);
-  --input: hsl(214, 32%, 95%);
-  --ring: hsl(217, 91%, 60%);
+  --border: hsl(180, 100%, 20%); /* Subtle cyan borders */
+  --input: hsl(220, 25%, 15%);
+  --ring: hsl(180, 100%, 50%);
   
   /* Chart colors for medical data visualization */
   --chart-1: hsl(217, 91%, 60%);
@@ -160,6 +160,8 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    background: linear-gradient(135deg, hsl(220, 30%, 7%) 0%, hsl(220, 25%, 10%) 100%);
+    min-height: 100vh;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -415,13 +417,31 @@
 }
 
 @keyframes pulse-medical {
-  0%, 100% { background-color: hsl(217, 91%, 60%, 0.1); }
-  50% { background-color: hsl(217, 91%, 60%, 0.2); }
+  0%, 100% { background-color: hsl(180, 100%, 50%, 0.1); }
+  50% { background-color: hsl(180, 100%, 50%, 0.2); }
 }
 
 @keyframes voice-listening {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes medical-glow {
+  0%, 100% { 
+    box-shadow: 0 0 20px hsl(180, 100%, 50%, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 30px hsl(180, 100%, 50%, 0.5);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px hsl(180, 100%, 50%, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 10px hsl(180, 100%, 50%, 0.8);
+  }
 }
 
 .animate-heartbeat {
@@ -434,6 +454,24 @@
 
 .animate-voice-listening {
   animation: voice-listening 1.5s ease-in-out infinite;
+}
+
+/* Medical theme classes */
+.medical-glow {
+  animation: medical-glow 3s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.medical-icon {
+  filter: drop-shadow(0 0 8px hsl(180, 100%, 50%, 0.5));
+}
+
+.medical-border {
+  border: 1px solid hsl(180, 100%, 50%, 0.3);
+  border-radius: 8px;
 }
 
 /* Medical application custom scrollbar */
