@@ -1,8 +1,8 @@
-import OpenAI from "openai";
+import Groq from "groq-sdk";
 
-// the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "sk-default_key"
+// Using Groq with the user's API key for fast AI inference
+const groq = new Groq({
+  apiKey: process.env.OPENAI_API_KEY, // Using the same env var name for compatibility
 });
 
 export interface MedicalChatResponse {
@@ -47,8 +47,8 @@ export async function analyzeMedicalChat(message: string, context?: string): Pro
 
     const userMessage = context ? `Context: ${context}\n\nQuestion: ${message}` : message;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const response = await groq.chat.completions.create({
+      model: "llama3-70b-8192",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userMessage }
@@ -67,7 +67,7 @@ export async function analyzeMedicalChat(message: string, context?: string): Pro
       recommendations: result.recommendations || [],
     };
   } catch (error) {
-    console.error("OpenAI medical chat error:", error);
+    console.error("Groq medical chat error:", error);
     throw new Error("Failed to process medical chat: " + (error as Error).message);
   }
 }
@@ -117,8 +117,8 @@ export async function analyzeSymptoms(
     Additional Info: ${additionalInfo || "None"}
     `;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const response = await groq.chat.completions.create({
+      model: "llama3-70b-8192",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userInput }
@@ -144,7 +144,7 @@ export async function analyzeSymptoms(
       emergencySignals: result.emergencySignals || [],
     };
   } catch (error) {
-    console.error("OpenAI symptom analysis error:", error);
+    console.error("Groq symptom analysis error:", error);
     throw new Error("Failed to analyze symptoms: " + (error as Error).message);
   }
 }
@@ -183,8 +183,8 @@ export async function generateFollowUpPlan(
     Current Symptoms: ${currentSymptoms}
     `;
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const response = await groq.chat.completions.create({
+      model: "llama3-70b-8192",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: userInput }
@@ -204,7 +204,7 @@ export async function generateFollowUpPlan(
       milestones: result.milestones || ["Symptom improvement", "Full recovery"],
     };
   } catch (error) {
-    console.error("OpenAI follow-up planning error:", error);
+    console.error("Groq follow-up planning error:", error);
     throw new Error("Failed to generate follow-up plan: " + (error as Error).message);
   }
 }
