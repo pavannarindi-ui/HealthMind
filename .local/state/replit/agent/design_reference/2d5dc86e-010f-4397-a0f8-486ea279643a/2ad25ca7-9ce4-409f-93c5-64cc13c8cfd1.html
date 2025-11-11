@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Pro - Comprehensive Medical Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'medical-blue': '#2563EB',
+                        'medical-blue-dark': '#1E40AF',
+                        'health-green': '#10B981',
+                        'health-green-dark': '#059669',
+                        'medical-purple': '#7C3AED',
+                        'medical-amber': '#F59E0B'
+                    },
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'source': ['Source Sans Pro', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-50 font-inter">
+    <!-- Navigation Header -->
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-heartbeat text-2xl text-medical-blue"></i>
+                        <span class="text-xl font-bold text-slate-800">MediCare Pro</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#dashboard" class="text-slate-600 hover:text-medical-blue transition-colors">Dashboard</a>
+                    <a href="#symptom-checker" class="text-slate-600 hover:text-medical-blue transition-colors">Symptom Checker</a>
+                    <a href="#chat" class="text-slate-600 hover:text-medical-blue transition-colors">AI Assistant</a>
+                    <a href="#resources" class="text-slate-600 hover:text-medical-blue transition-colors">Resources</a>
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 bg-medical-blue text-white px-4 py-2 rounded-lg hover:bg-medical-blue-dark transition-colors">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Profile</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-slate-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Emergency Banner -->
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-exclamation-triangle text-red-600"></i>
+                <div>
+                    <p class="text-sm text-red-800">
+                        <strong>Medical Disclaimer:</strong> This app provides informational content only and is not a substitute for professional medical advice. 
+                        In case of emergency, call 911 immediately.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Section with Avatar -->
+        <div class="bg-gradient-to-r from-medical-blue to-medical-purple rounded-xl p-8 mb-8 text-white">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold mb-2">Welcome back, Sarah!</h1>
+                    <p class="text-blue-100 mb-4">Your health journey continues. How can I assist you today?</p>
+                    
+                    <!-- Voice Assistant Toggle -->
+                    <div class="flex items-center space-x-4">
+                        <button id="voiceToggle" class="bg-white/20 backdrop-blur-sm border border-white/30 text-white px-6 py-3 rounded-lg hover:bg-white/30 transition-all flex items-center space-x-2">
+                            <i class="fas fa-microphone"></i>
+                            <span>Voice Assistant</span>
+                            <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse hidden" id="voiceIndicator"></div>
+                        </button>
+                        
+                        <div class="text-sm text-blue-100">
+                            <p>Say "Hey MediCare" to activate</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gamified Health Avatar -->
+                <div class="mt-6 md:mt-0 md:ml-8">
+                    <div class="relative">
+                        <!-- A friendly medical avatar representing user's health status -->
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200" 
+                             alt="Health Avatar" 
+                             class="w-24 h-24 rounded-full border-4 border-white/30 object-cover">
+                        <div class="absolute -bottom-2 -right-2 bg-health-green text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">
+                            85
+                        </div>
+                        <div class="absolute -top-2 -left-2 bg-medical-amber text-white rounded-full w-6 h-6 flex items-center justify-center">
+                            <i class="fas fa-star text-xs"></i>
+                        </div>
+                    </div>
+                    <p class="text-center text-blue-100 text-sm mt-2">Health Score: 85/100</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Symptom Checker -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow cursor-pointer" data-feature="symptom-checker">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search-plus text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">Symptom Checker</h3>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">Analyze symptoms with interactive body mapping and get risk assessments</p>
+                <div class="flex items-center text-medical-blue text-sm font-medium">
+                    <span>Start Analysis</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </div>
+
+            <!-- AI Chatbot -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow cursor-pointer" data-feature="ai-chat">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-medical-blue/10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-robot text-medical-blue text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">AI Medical Assistant</h3>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">Chat with our AI-powered medical assistant for instant health guidance</p>
+                <div class="flex items-center text-medical-blue text-sm font-medium">
+                    <span>Start Chat</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </div>
+
+            <!-- Offline Resources -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow cursor-pointer" data-feature="offline">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-health-green/10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-wifi text-health-green text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">Offline Mode</h3>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">Access essential medical information without internet connection</p>
+                <div class="flex items-center text-health-green text-sm font-medium">
+                    <span>Access Now</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </div>
+
+            <!-- Doctor Portal -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow cursor-pointer" data-feature="doctor-portal">
+                <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-medical-purple/10 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-md text-medical-purple text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-slate-800">Doctor Portal</h3>
+                </div>
+                <p class="text-slate-600 text-sm mb-4">Professional tools and patient management for healthcare providers</p>
+                <div class="flex items-center text-medical-purple text-sm font-medium">
+                    <span>Login</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom Checker Interface -->
+        <div id="symptom-checker-section" class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8 hidden">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Interactive Symptom Checker</h2>
+                <p class="text-slate-600">Select the affected area on the body diagram and describe your symptoms</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Body Diagram -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Select Affected Area</h3>
+                        <div class="relative inline-block">
+                            <!-- Human body silhouette diagram with clickable areas -->
+                            <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=600" 
+                                 alt="Human body diagram for symptom selection" 
+                                 class="w-64 h-96 object-cover rounded-lg border-2 border-slate-200">
+                            
+                            <!-- Clickable body areas -->
+                            <div class="absolute top-16 left-1/2 transform -translate-x-1/2 w-8 h-8 border-2 border-red-500 rounded-full bg-red-100/50 hover:bg-red-200/80 cursor-pointer" data-body-part="head" title="Head"></div>
+                            <div class="absolute top-32 left-1/2 transform -translate-x-1/2 w-12 h-16 border-2 border-blue-500 rounded bg-blue-100/50 hover:bg-blue-200/80 cursor-pointer" data-body-part="chest" title="Chest"></div>
+                            <div class="absolute top-48 left-1/2 transform -translate-x-1/2 w-10 h-12 border-2 border-green-500 rounded bg-green-100/50 hover:bg-green-200/80 cursor-pointer" data-body-part="abdomen" title="Abdomen"></div>
+                        </div>
+                        
+                        <div class="mt-4 text-sm text-slate-600">
+                            <p>Click on body areas to select symptoms location</p>
+                        </div>
+                    </div>
+
+                    <!-- Symptom Details Form -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Describe Your Symptoms</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Selected Area</label>
+                                <input type="text" id="selectedBodyPart" placeholder="Click on body diagram" 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent"
+                                       readonly>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Symptom Description</label>
+                                <textarea placeholder="Describe your symptoms in detail..." 
+                                          class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent h-24"
+                                          data-implementation="Connect to symptom analysis API"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Pain Level (1-10)</label>
+                                <div class="flex space-x-2">
+                                    <div class="flex-1">
+                                        <input type="range" min="1" max="10" value="5" 
+                                               class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                                    </div>
+                                    <span class="text-sm font-medium text-slate-600 w-8">5/10</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Duration</label>
+                                <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent">
+                                    <option>Less than 1 hour</option>
+                                    <option>1-6 hours</option>
+                                    <option>6-24 hours</option>
+                                    <option>1-3 days</option>
+                                    <option>More than 3 days</option>
+                                </select>
+                            </div>
+                            
+                            <button class="w-full bg-medical-blue text-white py-3 rounded-lg hover:bg-medical-blue-dark transition-colors font-medium"
+                                    data-implementation="Process symptoms through AI analysis API">
+                                <i class="fas fa-search mr-2"></i>
+                                Analyze Symptoms
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Chat Interface -->
+        <div id="ai-chat-section" class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8 hidden">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">AI Medical Assistant</h2>
+                        <p class="text-slate-600">Get instant medical guidance from our AI-powered assistant</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-health-green">
+                        <div class="w-2 h-2 bg-health-green rounded-full animate-pulse"></div>
+                        <span class="text-sm font-medium">Online</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col h-96">
+                <!-- Chat Messages -->
+                <div class="flex-1 p-6 overflow-y-auto space-y-4" id="chatMessages">
+                    <!-- AI Message -->
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-medical-blue rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white text-sm"></i>
+                        </div>
+                        <div class="bg-slate-100 rounded-lg p-3 max-w-sm">
+                            <p class="text-sm text-slate-800">Hello! I'm your AI medical assistant. How can I help you today? You can ask me about symptoms, medications, or general health questions.</p>
+                            <span class="text-xs text-slate-500 mt-1 block">Just now</span>
+                        </div>
+                    </div>
+                    
+                    <!-- User Message Example -->
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="bg-medical-blue rounded-lg p-3 max-w-sm text-white">
+                            <p class="text-sm">I've been having headaches for the past few days. What could be causing them?</p>
+                            <span class="text-xs text-blue-200 mt-1 block">2 minutes ago</span>
+                        </div>
+                        <div class="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-slate-600 text-sm"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Response with medical info -->
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-medical-blue rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white text-sm"></i>
+                        </div>
+                        <div class="bg-slate-100 rounded-lg p-3 max-w-md">
+                            <p class="text-sm text-slate-800 mb-2">Headaches can have various causes. Based on the information, here are some common possibilities:</p>
+                            <ul class="text-sm text-slate-800 space-y-1 mb-2">
+                                <li>• Tension or stress</li>
+                                <li>• Dehydration</li>
+                                <li>• Sleep deprivation</li>
+                                <li>• Eye strain</li>
+                            </ul>
+                            <p class="text-xs text-red-600 font-medium">⚠️ If headaches persist or worsen, consult a healthcare professional.</p>
+                            <span class="text-xs text-slate-500 mt-1 block">1 minute ago</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Chat Input -->
+                <div class="border-t border-slate-200 p-4">
+                    <div class="flex space-x-3">
+                        <button class="text-slate-400 hover:text-medical-blue transition-colors" title="Voice Input">
+                            <i class="fas fa-microphone text-lg"></i>
+                        </button>
+                        <input type="text" placeholder="Type your medical question..." 
+                               class="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent"
+                               data-implementation="Connect to medical AI API like OpenAI GPT-4 with medical training">
+                        <button class="bg-medical-blue text-white px-4 py-2 rounded-lg hover:bg-medical-blue-dark transition-colors"
+                                data-implementation="Send message to AI API and process response">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-2">
+                        💡 Try asking: "What are the symptoms of flu?" or "How to manage diabetes?"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Follow-up Care System -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Follow-up Care</h2>
+                <p class="text-slate-600">Track your recovery and get personalized care recommendations</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Active Follow-ups -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-slate-800">Active Follow-ups</h3>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-blue-800">Headache Recovery</span>
+                                <span class="text-xs text-blue-600">Day 3 of 7</span>
+                            </div>
+                            <div class="w-full bg-blue-200 rounded-full h-2 mb-3">
+                                <div class="bg-blue-600 h-2 rounded-full" style="width: 43%"></div>
+                            </div>
+                            <p class="text-sm text-blue-700">Next check-in: Tomorrow at 2:00 PM</p>
+                            <button class="mt-2 text-blue-600 text-sm font-medium hover:text-blue-800">Update Status</button>
+                        </div>
+                        
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-sm font-medium text-green-800">Medication Adherence</span>
+                                <span class="text-xs text-green-600">85% Complete</span>
+                            </div>
+                            <div class="w-full bg-green-200 rounded-full h-2 mb-3">
+                                <div class="bg-green-600 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <p class="text-sm text-green-700">Good progress! Keep it up.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Personalized Recommendations -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Today's Recommendations</h3>
+                        
+                        <div class="space-y-3">
+                            <div class="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg">
+                                <i class="fas fa-pills text-medical-blue mt-1"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-800">Medication Reminder</p>
+                                    <p class="text-xs text-slate-600">Take Ibuprofen 400mg at 2:00 PM</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg">
+                                <i class="fas fa-utensils text-health-green mt-1"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-800">Diet Suggestion</p>
+                                    <p class="text-xs text-slate-600">Include omega-3 rich foods for inflammation</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg">
+                                <i class="fas fa-bed text-medical-purple mt-1"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-slate-800">Rest Advice</p>
+                                    <p class="text-xs text-slate-600">Aim for 7-8 hours of sleep tonight</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Risk Assessment -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Risk Assessment</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="text-center">
+                                <div class="w-20 h-20 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-3">
+                                    <span class="text-2xl font-bold text-green-600">LOW</span>
+                                </div>
+                                <p class="text-sm text-slate-600">Current risk level based on symptoms and vitals</p>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-600">Symptom Severity</span>
+                                    <span class="text-green-600 font-medium">Mild</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-600">Recovery Progress</span>
+                                    <span class="text-green-600 font-medium">Good</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-slate-600">Next Assessment</span>
+                                    <span class="text-slate-800 font-medium">2 days</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offline Resources Page -->
+        <div id="offline-section" class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8 hidden">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">Offline Medical Resources</h2>
+                        <p class="text-slate-600">Essential medical information available without internet connection</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-green-600">
+                        <i class="fas fa-download"></i>
+                        <span class="text-sm font-medium">Downloaded</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Emergency Procedures -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-ambulance text-red-500 mr-2"></i>
+                            Emergency Procedures
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>• CPR Instructions</li>
+                            <li>• Choking Response</li>
+                            <li>• Severe Bleeding Control</li>
+                            <li>• Heart Attack Signs</li>
+                            <li>• Stroke Recognition</li>
+                        </ul>
+                        <button class="mt-3 text-red-600 text-sm font-medium hover:text-red-800">View All</button>
+                    </div>
+                    
+                    <!-- Drug Information -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-pills text-blue-500 mr-2"></i>
+                            Drug Database
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>• Common Medications</li>
+                            <li>• Dosage Guidelines</li>
+                            <li>• Drug Interactions</li>
+                            <li>• Side Effects</li>
+                            <li>• Contraindications</li>
+                        </ul>
+                        <button class="mt-3 text-blue-600 text-sm font-medium hover:text-blue-800">Search Database</button>
+                    </div>
+                    
+                    <!-- First Aid -->
+                    <div class="border border-slate-200 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-3 flex items-center">
+                            <i class="fas fa-band-aid text-green-500 mr-2"></i>
+                            First Aid Guide
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-600">
+                            <li>• Wound Care</li>
+                            <li>• Burns Treatment</li>
+                            <li>• Fracture Management</li>
+                            <li>• Allergic Reactions</li>
+                            <li>• Poisoning Response</li>
+                        </ul>
+                        <button class="mt-3 text-green-600 text-sm font-medium hover:text-green-800">Open Guide</button>
+                    </div>
+                </div>
+                
+                <!-- Offline Status Indicator -->
+                <div class="mt-6 bg-slate-50 rounded-lg p-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i class="fas fa-wifi text-slate-400"></i>
+                            <span class="text-sm text-slate-600">Offline Mode Active</span>
+                        </div>
+                        <div class="text-sm text-slate-500">Last Updated: 2 hours ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doctor Portal Login -->
+        <div id="doctor-portal-section" class="bg-white rounded-xl shadow-sm border border-slate-200 mb-8 hidden">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Healthcare Provider Portal</h2>
+                <p class="text-slate-600">Secure access for licensed healthcare professionals</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="max-w-md mx-auto">
+                    <div class="text-center mb-6">
+                        <i class="fas fa-user-md text-4xl text-medical-purple mb-4"></i>
+                        <h3 class="text-xl font-semibold text-slate-800">Professional Access</h3>
+                    </div>
+                    
+                    <form class="space-y-4" data-implementation="Integrate with healthcare provider authentication system">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Medical License Number</label>
+                            <input type="text" placeholder="Enter your license number" 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-purple focus:border-transparent">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Secure PIN</label>
+                            <input type="password" placeholder="Enter your PIN" 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-purple focus:border-transparent">
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" class="w-4 h-4 text-medical-purple border-slate-300 rounded focus:ring-medical-purple">
+                            <label class="ml-2 text-sm text-slate-600">Keep me signed in on this device</label>
+                        </div>
+                        
+                        <button type="submit" class="w-full bg-medical-purple text-white py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium"
+                                data-implementation="Authenticate against medical license database">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Access Professional Tools
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center">
+                        <p class="text-xs text-slate-500">
+                            By accessing this portal, you agree to maintain patient confidentiality and comply with HIPAA regulations.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Resources -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200">
+            <div class="p-6 border-b border-slate-200">
+                <h2 class="text-2xl font-bold text-slate-800 mb-2">Medical Resources</h2>
+                <p class="text-slate-600">Reliable health information from trusted medical sources</p>
+            </div>
+            
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Health Articles -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-slate-800">Latest Health Articles</h3>
+                        
+                        <div class="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                            <!-- Health article thumbnail -->
+                            <img src="https://pixabay.com/get/gde1e8f3ebf842dbe2e8a44ecc45dbabc7996fcbbb221d36bbba0ac605b8c162897894006325b36ff95aa919f46103955811acfd4aef933e61a9d3c485b7d9616_1280.jpg" 
+                                 alt="Medical research and health information" 
+                                 class="w-full h-32 object-cover rounded mb-3">
+                            <h4 class="font-medium text-slate-800 mb-2">Understanding Hypertension</h4>
+                            <p class="text-sm text-slate-600 mb-3">Learn about blood pressure management and lifestyle changes...</p>
+                            <span class="text-xs text-medical-blue font-medium">Read More</span>
+                        </div>
+                        
+                        <div class="border border-slate-200 rounded-lg p-4 hover:shadow-sm transition-shadow">
+                            <!-- Nutrition guidance image -->
+                            <img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200" 
+                                 alt="Healthy food and nutrition guidance" 
+                                 class="w-full h-32 object-cover rounded mb-3">
+                            <h4 class="font-medium text-slate-800 mb-2">Nutrition for Immune Health</h4>
+                            <p class="text-sm text-slate-600 mb-3">Essential nutrients and foods that boost your immune system...</p>
+                            <span class="text-xs text-medical-blue font-medium">Read More</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Drug Interactions Tool -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Drug Interaction Checker</h3>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Current Medications</label>
+                                <input type="text" placeholder="Enter medication names..." 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-blue focus:border-transparent"
+                                       data-implementation="Connect to FDA drug database API">
+                            </div>
+                            
+                            <button class="w-full bg-medical-blue text-white py-2 rounded-lg hover:bg-medical-blue-dark transition-colors font-medium"
+                                    data-implementation="Check interactions using medical API">
+                                <i class="fas fa-search mr-2"></i>
+                                Check Interactions
+                            </button>
+                            
+                            <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+                                <div class="flex items-center space-x-2">
+                                    <i class="fas fa-exclamation-triangle text-amber-600"></i>
+                                    <span class="text-sm font-medium text-amber-800">Always consult your pharmacist</span>
+                                </div>
+                                <p class="text-xs text-amber-700 mt-1">This tool provides general information only.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Health Calculator -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Health Calculators</h3>
+                        
+                        <div class="space-y-3">
+                            <button class="w-full text-left p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                                    data-implementation="Implement BMI calculation">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-slate-800">BMI Calculator</h4>
+                                        <p class="text-xs text-slate-600">Calculate Body Mass Index</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                </div>
+                            </button>
+                            
+                            <button class="w-full text-left p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                                    data-implementation="Implement calorie calculator">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-slate-800">Calorie Calculator</h4>
+                                        <p class="text-xs text-slate-600">Daily caloric needs</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                </div>
+                            </button>
+                            
+                            <button class="w-full text-left p-3 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                                    data-implementation="Implement pregnancy calculator">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-slate-800">Pregnancy Calculator</h4>
+                                        <p class="text-xs text-slate-600">Due date estimation</p>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-slate-400"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-heartbeat text-2xl text-medical-blue"></i>
+                        <span class="text-xl font-bold">MediCare Pro</span>
+                    </div>
+                    <p class="text-slate-300 text-sm">
+                        Advanced medical assistance at your fingertips. Empowering better health decisions through AI and technology.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Features</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li>AI Medical Assistant</li>
+                        <li>Symptom Checker</li>
+                        <li>Voice Assistant</li>
+                        <li>Offline Resources</li>
+                        <li>Follow-up Care</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">For Professionals</h3>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li>Doctor Portal</li>
+                        <li>Patient Management</li>
+                        <li>Clinical Tools</li>
+                        <li>API Documentation</li>
+                        <li>Integration Support</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="font-semibold mb-4">Emergency</h3>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <p>For immediate medical attention:</p>
+                        <p class="text-red-400 font-bold text-lg">Call 911</p>
+                        <p>Poison Control: 1-800-222-1222</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-700 mt-8 pt-8 text-center text-sm text-slate-400">
+                <p>&copy; 2024 MediCare Pro. This app is for informational purposes only and not a substitute for professional medical advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Feature navigation functionality
+            const featureCards = document.querySelectorAll('[data-feature]');
+            const sections = {
+                'symptom-checker': document.getElementById('symptom-checker-section'),
+                'ai-chat': document.getElementById('ai-chat-section'),
+                'offline': document.getElementById('offline-section'),
+                'doctor-portal': document.getElementById('doctor-portal-section')
+            };
+
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const feature = this.getAttribute('data-feature');
+                    
+                    // Hide all sections
+                    Object.values(sections).forEach(section => {
+                        if (section) section.classList.add('hidden');
+                    });
+                    
+                    // Show selected section
+                    if (sections[feature]) {
+                        sections[feature].classList.remove('hidden');
+                        sections[feature].scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Body part selection for symptom checker
+            const bodyParts = document.querySelectorAll('[data-body-part]');
+            const selectedBodyPartInput = document.getElementById('selectedBodyPart');
+
+            bodyParts.forEach(part => {
+                part.addEventListener('click', function() {
+                    const bodyPart = this.getAttribute('data-body-part');
+                    if (selectedBodyPartInput) {
+                        selectedBodyPartInput.value = bodyPart.charAt(0).toUpperCase() + bodyPart.slice(1);
+                    }
+                    
+                    // Remove previous selections
+                    bodyParts.forEach(p => p.classList.remove('ring-4', 'ring-red-500'));
+                    // Add selection to clicked part
+                    this.classList.add('ring-4', 'ring-red-500');
+                });
+            });
+
+            // Voice assistant toggle
+            const voiceToggle = document.getElementById('voiceToggle');
+            const voiceIndicator = document.getElementById('voiceIndicator');
+            let isListening = false;
+
+            if (voiceToggle && voiceIndicator) {
+                voiceToggle.addEventListener('click', function() {
+                    isListening = !isListening;
+                    
+                    if (isListening) {
+                        voiceIndicator.classList.remove('hidden');
+                        this.classList.add('bg-white/30');
+                        // TODO: Implement speech recognition API
+                        console.log('Voice assistant activated');
+                    } else {
+                        voiceIndicator.classList.add('hidden');
+                        this.classList.remove('bg-white/30');
+                        console.log('Voice assistant deactivated');
+                    }
+                });
+            }
+
+            // Pain level slider interaction
+            const painSlider = document.querySelector('input[type="range"]');
+            const painValue = document.querySelector('.text-sm.font-medium.text-slate-600.w-8');
+
+            if (painSlider && painValue) {
+                painSlider.addEventListener('input', function() {
+                    painValue.textContent = `${this.value}/10`;
+                });
+            }
+
+            // Chat input functionality (placeholder)
+            const chatInput = document.querySelector('#ai-chat-section input[type="text"]');
+            const chatSendButton = document.querySelector('#ai-chat-section button[data-implementation*="Send message"]');
+
+            if (chatInput && chatSendButton) {
+                chatSendButton.addEventListener('click', function() {
+                    const message = chatInput.value.trim();
+                    if (message) {
+                        // TODO: Implement chat functionality with medical AI API
+                        console.log('Sending message:', message);
+                        chatInput.value = '';
+                    }
+                });
+
+                chatInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        chatSendButton.click();
+                    }
+                });
+            }
+
+            // Service Worker registration for offline functionality
+            if ('serviceWorker' in navigator) {
+                // TODO: Implement service worker for offline medical resources
+                console.log('Service Worker support detected - implement offline functionality');
+            }
+
+            // Initialize responsiveness checks
+            function handleResize() {
+                // TODO: Implement responsive behavior adjustments
+                console.log('Window resized, checking responsive layout');
+            }
+
+            window.addEventListener('resize', handleResize);
+
+            // Initialize notification system for follow-ups
+            // TODO: Implement push notifications for medication reminders and follow-ups
+            console.log('Medical app initialized with all features');
+        })();
+    </script>
+</body>
+</html>
